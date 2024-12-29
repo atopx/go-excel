@@ -7,16 +7,14 @@ import (
 )
 
 const (
-	TagNameBase   = "excel"
-	TagNameHead   = "head:"
-	TagNameWidth  = "width:"
-	TagNameHeight = "height:"
+	TagNameBase  = "excel"
+	TagNameHead  = "head:"
+	TagNameWidth = "width:"
 )
 
 type Tag struct {
-	Head   string
-	Width  float64
-	Height float64
+	Head  string
+	Width float64
 }
 
 func parseTag(field reflect.StructField) (*Tag, error) {
@@ -32,10 +30,6 @@ func parseTag(field reflect.StructField) (*Tag, error) {
 		if strings.HasPrefix(tagStr, TagNameWidth) {
 			value := strings.TrimPrefix(tagStr, TagNameWidth)
 			tag.Width, _ = strconv.ParseFloat(value, 64)
-		}
-		if strings.HasPrefix(tagStr, TagNameHeight) {
-			value := strings.TrimPrefix(tagStr, TagNameHeight)
-			tag.Height, _ = strconv.ParseFloat(value, 64)
 		}
 	}
 	if tag.Head == "" {

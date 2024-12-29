@@ -53,20 +53,6 @@ func (e *Excel[T]) Write(rows []*T, styles ...*excelize.Style) error {
 		return err
 	}
 
-	if tag.Height > 0 {
-		err = e.File.SetRowHeight(e.SheetName, 1, tag.Height)
-		if err != nil {
-			return fmt.Errorf("set row height failed: %w", err)
-		}
-	}
-
-	if tag.Width > 0 {
-		err = e.File.SetColWidth(e.SheetName, "A", CoordCol(colNum), tag.Width)
-		if err != nil {
-			return fmt.Errorf("set col width failed: %w", err)
-		}
-	}
-
 	// 写入 headlines
 	for colIdx := 0; colIdx < colNum; colIdx++ {
 		tag, err = parseTag(typeRef.Field(colIdx))
@@ -76,6 +62,15 @@ func (e *Excel[T]) Write(rows []*T, styles ...*excelize.Style) error {
 		cell, _ := excelize.CoordinatesToCellName(colIdx+1, 1)
 		if err = e.File.SetCellStr(e.SheetName, cell, tag.Head); err != nil {
 			return fmt.Errorf("writing headline failed: %w", err)
+		}
+
+		if tag.Width > 0 {
+			col := CoordCol(colIdx + 1)
+			fmt.Println(col, tag.Width)
+			err = e.File.SetColWidth(e.SheetName, col, col, tag.Width)
+			if err != nil {
+				return fmt.Errorf("set col width failed: %w", err)
+			}
 		}
 	}
 

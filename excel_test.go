@@ -8,9 +8,9 @@ import (
 )
 
 type WorkSheet struct {
-	Code string `excel:"head:编号"`
-	Name string `excel:"head:名称"`
+	Code string `excel:"head:编号;width:20"`
 	Age  string `excel:"head:年龄"`
+	Name string `excel:"head:名称;width:30;"`
 }
 
 var data = []*WorkSheet{
